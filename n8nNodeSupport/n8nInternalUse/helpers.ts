@@ -1,5 +1,6 @@
 /* This file is maintained by n8n */
 
+/* Owned by n8n */
 export interface IOperations {
     [key: string]: {
         overideRequestMethod: string,
@@ -7,33 +8,54 @@ export interface IOperations {
     },
 }
 
-export interface IResources {
+/* Owned by n8n */
+interface IResources {
     [key: string]: {
-        defaultRequestMethod: string,
-        operations: IOperations[],
+        defaultRequestMethod: string
+        operations: IOperations
     }
 }
 
-export interface IAPI_ACTIONS { 
-    resources: IResources[]
+/* Owned by n8n */
+export interface IAPI_ACTIONS {
+    resources: IResources
 }
 
+/* Owned by n8n */
 const getResourcesForAPI = (apiActions: IAPI_ACTIONS): string[] => {
-    const resourceList = apiActions.resources.map(resource => Object.keys(resource));
-    let flattenedResourceList: string[] = [];
-    flattenedResourceList = flattenedResourceList.concat(...resourceList);
-    return flattenedResourceList;
+    const resourceList = Object.keys(apiActions.resources)
+    return resourceList;
 }
 
 
+/* Owned by n8n */
 const getOperationsForAPI = (apiActions: IAPI_ACTIONS): string[] => {
     let operationList: any = [];
     const resourceKeys = getResourcesForAPI(apiActions);
     resourceKeys.map(resource => {
-        const operationsList = apiActions.resources[0][resource].operations.map(operation => Object.keys(operation));
-        let flattenedResourceList: string[] = [];
-        flattenedResourceList = flattenedResourceList.concat(...operationsList);
-        operationList = [...operationList, ...flattenedResourceList];
+        operationList.push(...Object.keys(apiActions.resources[resource].operations));
     });
     return operationList;
+}
+
+// Executing API Actions are now handled by n8n
+
+const recursivelyFindAction = (accumulator, currentValue) => accumulator[currentValue];
+
+/**
+ * Will return the function reference for a specific API's executeRequest
+ * @param apiActions
+ * @param selectedAction
+ */
+const getAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): Function => {
+    return [...selectedAction, "executeRequest"].reduce(recursivelyFindAction, apiActions);
+}
+
+/**
+ * Will execute the function for a specific API's executeRequest
+ * @param apiActions
+ * @param selectedAction
+ */
+const executeAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): void => {
+    return [...selectedAction, "executeRequest"].reduce(recursivelyFindAction, apiActions)();
 }
