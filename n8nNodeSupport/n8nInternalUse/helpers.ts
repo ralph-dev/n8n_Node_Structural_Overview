@@ -1,15 +1,16 @@
 /* This file is maintained by n8n */
 
-interface IOperations {
+export interface IOperations {
     [key: string]: {
         overideRequestMethod: string,
+        executeRequest: Function
     },
 }
 
-interface IResources {
+export interface IResources {
     [key: string]: {
-        defaultRequestMethod: string
-        operations: IOperations[]
+        defaultRequestMethod: string,
+        operations: IOperations[],
     }
 }
 
