@@ -1,3 +1,5 @@
+/* This file is maintained by n8n */
+
 interface IOperations {
     [key: string]: {
         overideRequestMethod: string,
