@@ -13,7 +13,7 @@ interface IResources {
     }
 }
 
-interface IAPI_ACTIONS { 
+export interface IAPI_ACTIONS { 
     resources: IResources[]
 }
 
