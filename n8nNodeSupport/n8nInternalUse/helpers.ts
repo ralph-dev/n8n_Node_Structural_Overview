@@ -54,7 +54,7 @@ const getAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): 
 /**
  * Will execute the function for a specific API's executeRequest
  * @param apiActions
- * @param selectedAction
+ * @param selectedAction - Ex: ["ResourceName", "OperationName", "executeRequetst"]
  */
 const executeAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): void => {
     return [...selectedAction, "executeRequest"].reduce(recursivelyFindAction, apiActions)();
