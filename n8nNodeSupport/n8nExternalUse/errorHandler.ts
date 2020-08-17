@@ -17,13 +17,10 @@ const recursivelyFindAction = (accumulator, currentValue) => accumulator[current
 * @return {N8nErrorAPIResponse} - The n8n standard API error object
 */
 export const errorHandler = (errorObj: object, pathTransformer: N8nErrorAPI): N8nErrorAPIResponse => {
-  let errorObjCopy: object;
   const apiStandard: N8nErrorAPIResponse = {code: '', message: ''};
 
   for (const [key, value] of Object.entries(pathTransformer)) {
-    errorObjCopy = errorObj;
-    errorObjCopy = value.reduce(recursivelyFindAction, errorObj);
-    apiStandard[key] = errorObjCopy.toString();
+    apiStandard[key] = value.reduce(recursivelyFindAction, errorObj).toString();
   }
 
   return apiStandard;
