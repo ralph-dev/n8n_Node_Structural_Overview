@@ -1,10 +1,15 @@
 /* This file is maintained by n8n */
 
+enum OperationKeys {
+    overideRequestMethod= 'overideRequestMethod',
+    executeRequest = 'executeRequest',
+}
+
 /* Owned by n8n */
 export interface IOperations {
     [key: string]: {
-        overideRequestMethod: string,
-        executeRequest: Function
+        [OperationKeys.overideRequestMethod]: string,
+        [OperationKeys.executeRequest]: Function
     },
 }
 
@@ -48,7 +53,7 @@ const recursivelyFindAction = (accumulator, currentValue) => accumulator[current
  * @param selectedAction
  */
 const getAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): Function => {
-    return [...selectedAction, "executeRequest"].reduce(recursivelyFindAction, apiActions);
+    return [...selectedAction, OperationKeys.executeRequest].reduce(recursivelyFindAction, apiActions);
 }
 
 /**
@@ -57,5 +62,5 @@ const getAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): 
  * @param selectedAction - Ex: ["ResourceName", "OperationName", "executeRequetst"]
  */
 const executeAPIAction = (apiActions: IAPI_ACTIONS, selectedAction: string[] = []): void => {
-    return [...selectedAction, "executeRequest"].reduce(recursivelyFindAction, apiActions)();
+    return [...selectedAction, OperationKeys.executeRequest].reduce(recursivelyFindAction, apiActions)();
 }
