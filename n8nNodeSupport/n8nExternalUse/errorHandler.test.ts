@@ -15,7 +15,9 @@ const spotifyToN8nPathTransfomer = {
 
 const spotifyExpectedResult = {
   code: "400",
-  message: "Only valid bearer authentication supported"
+  message: "Only valid bearer authentication supported",
+  code_heuristics: "Bad Request",
+  additional_messaging: "",
 }
 
 test('Should return correct error object format', () => {
@@ -58,7 +60,9 @@ const googleCalendarToN8nPathTransfomer = {
 
 const googleCalendarExpectedResult = {
   code: "400",
-  message: "The specified time range is empty."
+  message: "The specified time range is empty.",
+  code_heuristics: "Bad Request",
+  additional_messaging: "",
 }
 
 test('Should return correct error object format for Google', () => {
@@ -94,11 +98,13 @@ const freshDeskToN8nPathTransfomer = {
 
 const freshDeskExpectedResult = {
   code: "missing_field",
-  message: "Mandatory attribute missing"
+  message: "Mandatory attribute missing",
+  code_heuristics: undefined,
+  additional_messaging: "\"name\" => Mandatory attribute missing",
 }
 
 test('Should return correct error object format for Fresh Desk', () => {
-  expect(errorHandler(freshDeskErrorObj, freshDeskToN8nPathTransfomer)).toStrictEqual(freshDeskExpectedResult);
+  expect(errorHandler(freshDeskErrorObj, freshDeskToN8nPathTransfomer, freshDeskErrorObj.errors.map((err) => `"${err.field}" => ${err.message}`).join(', '))).toStrictEqual(freshDeskExpectedResult);
 });
 
 
@@ -118,7 +124,9 @@ const freshDesk2ToN8nPathTransfomer = {
 
 const freshDesk2ExpectedResult = {
   code: "401",
-  message: "Session expired or invalid"
+  message: "Session expired or invalid",
+  code_heuristics: "Unauthorized",
+  additional_messaging: "",
 }
 
 test('Should return correct error object format for FreshDesk 2', () => {
@@ -168,7 +176,9 @@ const xeroToN8nPathTransfomer = {
 
 const xeroExpectedResult = {
   code: "400",
-  message: "A validation exception occurred"
+  message: "A validation exception occurred",
+  code_heuristics: "Bad Request",
+  additional_messaging: "",
 }
 
 test('Should return correct error object format for Xero', () => {
@@ -219,7 +229,9 @@ const hubSpotToN8nPathTransfomer = {
 
 const hubSpotExpectedResult = {
   code: "400",
-  message: "This will be a human readable message with details about the error."
+  message: "This will be a human readable message with details about the error.",
+  code_heuristics: "Bad Request",
+  additional_messaging: "",
 }
 
 test('Should return correct error object format for Hubspot', () => {

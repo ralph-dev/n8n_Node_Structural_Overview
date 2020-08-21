@@ -3,7 +3,7 @@ import {statusCodes} from "./types";
 interface N8nErrorAPI {
     code: string[];
     message: string[];
-    additional_messaging: string[];
+    additional_messaging?: string;
 }
 
 interface N8nErrorAPIResponse {
@@ -22,11 +22,10 @@ const recursivelyFindAction = (accumulator, currentValue) => accumulator?.[curre
 * @param additionalMessaging {string} - Custom Error Strings appended to the Error Object for Human Consumption
 * @return {N8nErrorAPIResponse} - The n8n standard API error object
 */
-export const errorHandler = (errorObj: object, pathTransformer: N8nErrorAPI, additionalMessaging: string): N8nErrorAPIResponse => {
+export const errorHandler = (errorObj: object, pathTransformer: N8nErrorAPI, additionalMessaging: string = ""): N8nErrorAPIResponse => {
   const apiStandard: N8nErrorAPIResponse = {code: '', message: '', code_heuristics: '', additional_messaging: ''};
 
   for (const [key, value] of Object.entries(pathTransformer)) {
-    console.log(value)
     const result = value.reduce(recursivelyFindAction, errorObj)
     apiStandard[key] = result && result.toString();
   }
